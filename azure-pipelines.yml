@@ -18,6 +18,7 @@ steps:
     WebAppName: 'firstsourceuat'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     RuntimeStack: 'NODE|18-lts'
+
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
@@ -27,6 +28,7 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
