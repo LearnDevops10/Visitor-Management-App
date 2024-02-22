@@ -7,11 +7,17 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: 'Self-Hosted'
+  demands:
+  - Agent.OS -equals Windows_NT
 
 jobs:
 - job: Build_and_Deploy
   displayName: 'Build and Deploy'
+  pool:
+    name: 'Self-Hosted'
+    demands:
+    - Agent.OS -equals Windows_NT
   steps:
   - task: AzureRmWebAppDeployment@4
     inputs:
