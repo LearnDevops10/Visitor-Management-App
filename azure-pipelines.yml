@@ -9,32 +9,36 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Free Trial(f8c416d3-7517-410b-856b-ad31975af8e0)'
-    appType: 'webAppLinux'
-    WebAppName: 'firstsourceuat'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    RuntimeStack: 'NODE|18-lts'
+jobs:
+- job: Build_and_Deploy
+  displayName: 'Build and Deploy'
+  steps:
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Free Trial(f8c416d3-7517-410b-856b-ad31975af8e0)'
+      appType: 'webAppLinux'
+      WebAppName: 'firstsourceuat'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+      RuntimeStack: 'NODE|18-lts'
+      
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
 
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+  - script: |
+      npm install
+      npm run build
+    displayName: 'npm install and build'
 
-- script: |
-    npm run build
-  displayName: 'npm install and build'
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Free Trial(f8c416d3-7517-410b-856b-ad31975af8e0)'
-    appType: 'webAppLinux'
-    WebAppName: 'firstsourceuat'
-    deployToSlotOrASE: true
-    ResourceGroupName: 'BikuOrganization'
-    SlotName: 'production'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Free Trial(f8c416d3-7517-410b-856b-ad31975af8e0)'
+      appType: 'webAppLinux'
+      WebAppName: 'firstsourceuat'
+      deployToSlotOrASE: true
+      ResourceGroupName: 'BikuOrganization'
+      SlotName: 'production'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
