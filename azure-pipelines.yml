@@ -10,6 +10,14 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Free Trial(f8c416d3-7517-410b-856b-ad31975af8e0)'
+    appType: 'webAppLinux'
+    WebAppName: 'firstsourceuat'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'NODE|18-lts'
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
