@@ -27,3 +27,13 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Free Trial(f8c416d3-7517-410b-856b-ad31975af8e0)'
+    appType: 'webAppLinux'
+    WebAppName: 'firstsourceuat'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'BikuOrganization'
+    SlotName: 'production'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
